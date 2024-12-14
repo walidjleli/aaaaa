@@ -1,0 +1,18 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block body %}
+    <h1>Détails de l'événement</h1>
+
+    <p><strong>ID :</strong> {{ evenement.id }}</p>
+    <p><strong>Nom :</strong> {{ evenement.nom }}</p>
+    <p><strong>Description :</strong> {{ evenement.description }}</p>
+    <p><strong>Date :</strong> {{ evenement.date|date('Y-m-d H:i') }}</p>
+
+    <a href="{{ path('app_evenement_index') }}">Retour à la liste</a>
+    <a href="{{ path('app_evenement_edit', {'id': evenement.id}) }}">Modifier</a>
+
+    <form method="post" action="{{ path('app_evenement_delete', {'id': evenement.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.id) }}">
+        <button type="submit">Supprimer</button>
+    </form>
+{% endblock %}

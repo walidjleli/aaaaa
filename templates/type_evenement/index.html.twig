@@ -1,0 +1,49 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block title %}Liste des Types d'Événements{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Liste des Types d'Événements</h1>
+
+        {% if message is defined %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endif %}
+
+        <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for type_evenement in type_evenements %}
+                <tr>
+                    <td>{{ type_evenement.id }}</td>
+                    <td>{{ type_evenement.nom }}</td>
+                    <td>
+                        <a href="{{ path('app_type_evenement_edit', {'id': type_evenement.id}) }}" class="btn btn-sm btn-primary">
+                            Modifier
+                        </a>
+
+                        <!-- Formulaire pour la suppression -->
+                        <form method="post" action="{{ path('app_type_evenement_delete', {'id': type_evenement.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce type d\'événement ?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Supprimer</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">Aucun enregistrement trouvé.</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_type_evenement_new') }}" class="btn btn-success mt-3">Créer un nouveau type d'événement</a>
+    </div>
+{% endblock %}

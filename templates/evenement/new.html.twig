@@ -1,0 +1,41 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block title %}Créer un nouvel événement{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Créer un nouvel événement</h1>
+
+        <!-- Messages Flash -->
+        {% for type, messages in app.flashes %}
+            <div class="alert alert-{{ type }}">
+                {% for message in messages %}
+                    {{ message }}
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+        <div class="card shadow-sm p-4">
+            {{ form_start(form) }}
+            <table class="table table-bordered">
+                <tbody>
+                {% for field in form %}
+                    <tr>
+                        <th class="text-end align-middle" style="width: 30%;">{{ field.vars.label|default(field.vars.name) }}</th>
+                        <td>{{ form_widget(field) }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="text-end mt-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-check"></i> Créer
+                </button>
+                <a href="{{ path('app_evenement_index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

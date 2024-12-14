@@ -1,0 +1,114 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Gestion des Événements</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- TABLEAU DES ÉVÉNEMENTS -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h3 class="title-5 text-center mb-4">Liste des Événements</h3>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Description</th>
+                                    <th>Date</th>
+                                    <th>Lieu</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for evenement in evenements %}
+                                    <tr>
+                                        <td>{{ evenement.id }}</td>
+                                        <td>{{ evenement.nom }}</td>
+                                        <td>{{ evenement.description }}</td>
+                                        <td>{{ evenement.date|date('d-m-Y') }}</td>
+                                        <td>{{ evenement.lieu }}</td>
+                                        <td>
+                                            <a href="{{ path('app_evenement_show', { id: evenement.id }) }}" class="btn btn-sm btn-primary">
+                                                <i class="zmdi zmdi-eye"></i> Voir
+                                            </a>
+                                            <a href="{{ path('app_evenement_edit', { id: evenement.id }) }}" class="btn btn-sm btn-info text-white">
+                                                <i class="zmdi zmdi-edit"></i> Modifier
+                                            </a>
+                                            <form method="post" action="{{ path('app_evenement_delete', { id: evenement.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.id) }}">
+                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                    <i class="zmdi zmdi-delete"></i> Supprimer
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">Aucun événement disponible.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULAIRE DE CRÉATION -->
+            <h3 class="text-center mb-4">Créer un nouvel événement</h3>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    {{ form_start(form) }}
+                        {{ form_widget(form) }}
+                        <button type="submit" class="btn btn-primary">
+                            <i class="zmdi zmdi-plus"></i> Créer
+                        </button>
+                    {{ form_end(form) }}
+                </div>
+            </div>
+
+            <!-- DÉTAILS D'UN ÉVÉNEMENT -->
+            {% if evenement is defined %}
+                <h3 class="text-center mb-4">Détails de l'Événement</h3>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <p><strong>ID :</strong> {{ evenement.id }}</p>
+                        <p><strong>Nom :</strong> {{ evenement.nom }}</p>
+                        <p><strong>Description :</strong> {{ evenement.description }}</p>
+                        <p><strong>Date :</strong> {{ evenement.date|date('Y-m-d H:i') }}</p>
+                        <a href="{{ path('app_evenement_index') }}" class="btn btn-secondary">
+                            <i class="zmdi zmdi-arrow-left"></i> Retour à la liste
+                        </a>
+                        <a href="{{ path('app_evenement_edit', {'id': evenement.id}) }}" class="btn btn-info">
+                            <i class="zmdi zmdi-edit"></i> Modifier
+                        </a>
+                        <form method="post" action="{{ path('app_evenement_delete', {'id': evenement.id}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ evenement.id) }}">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="zmdi zmdi-delete"></i> Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- FORMULAIRE DE MODIFICATION -->
+            {% if edit_form is defined %}
+                <h3 class="text-center mb-4">Modifier l'Événement</h3>
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        {{ form_start(edit_form) }}
+                            {{ form_widget(edit_form) }}
+                            <button type="submit" class="btn btn-success">
+                                <i class="zmdi zmdi-save"></i> Enregistrer les modifications
+                            </button>
+                        {{ form_end(edit_form) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

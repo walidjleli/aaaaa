@@ -1,0 +1,63 @@
+{% extends 'baseForm.html.twig' %}
+
+{% block body %}
+    <section class="job-section job-featured-section section-padding" id="job-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12 text-center mx-auto mb-4">
+                    <h2>Événements Disponibles</h2>
+                    <p><strong>Découvrez nos événements récents</strong> et rejoignez-nous pour des expériences enrichissantes.</p>
+                </div>
+
+                <div class="col-lg-12 col-12">
+                    {% for evenement in evenements %}
+                        <div class="job-thumb d-flex">
+                            <div class="job-image-wrap bg-white shadow-lg">
+                                {% if evenement.image %}
+                                    <!-- Affichage de l'image associée -->
+                                    <img src="{{ asset('uploads/' ~ evenement.image) }}" class="job-image img-fluid" alt="{{ evenement.titre }}">
+                                {% else %}
+                                    <!-- Placeholder si aucune image n'est associée -->
+                                    <img src="{{ asset('images/event-placeholder.png') }}" class="job-image img-fluid" alt="{{ evenement.titre }}">
+                                {% endif %}
+                            </div>
+
+                            <div class="job-body d-flex flex-wrap flex-auto align-items-center ms-4">
+                                <div class="mb-3">
+                                    <!-- Nom de l'événement -->
+                                    <h4 class="job-title mb-lg-0">
+                                        <a href="#" class="job-title-link">{{ evenement.titre }}</a>
+                                    </h4>
+
+                                    <!-- Détails de l'événement -->
+                                    <p class="job-location mb-0">
+                                        <i class="custom-icon bi-calendar-event me-1"></i>
+                                        Date Début : <strong>{{ evenement.dateDebut|date('d-m-Y H:i') }}</strong>
+                                    </p>
+                                    <p class="job-location mb-0">
+                                        <i class="custom-icon bi-calendar-event-fill me-1"></i>
+                                        Date Fin : <strong>{{ evenement.dateFin|date('d-m-Y H:i') }}</strong>
+                                    </p>
+                                    <p class="job-description mb-0">
+                                        <i class="custom-icon bi-info-circle me-1"></i>
+                                        Description : <strong>{{ evenement.description }}</strong>
+                                    </p>
+                                    <p class="job-type mb-0">
+                                        <i class="custom-icon bi-tag-fill me-1"></i>
+                                        Type : <strong>{{ evenement.type.nom }}</strong>
+                                    </p>
+                                </div>
+
+                                <div class="job-section-btn-wrap">
+                                    <a href="#" class="custom-btn btn">En savoir plus</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <p>Aucun événement disponible pour le moment.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

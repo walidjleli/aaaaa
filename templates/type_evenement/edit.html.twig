@@ -1,0 +1,30 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block title %}Edit TypeEvenement{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <!-- Titre principal -->
+        <h1 class="text-center mb-4">Modifier le Type d'Événement</h1>
+
+        <!-- Carte contenant le formulaire -->
+        <div class="card shadow-sm p-4">
+            <h5 class="card-title text-center mb-4">Informations du Type d'Événement</h5>
+
+            <!-- Formulaire géré par Symfony -->
+            {{ form_start(form) }}
+            <div class="mb-3">
+                {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'fw-bold me-3'}}) }}
+                {{ form_widget(form.nom, {'attr': {'class': 'form-control w-50 d-inline-block'}}) }}
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">
+                    <i class="zmdi zmdi-save"></i> Mettre à jour
+                </button>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+

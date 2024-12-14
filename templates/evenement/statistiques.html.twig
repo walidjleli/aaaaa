@@ -1,0 +1,68 @@
+{% extends 'dash/index.html.twig' %}
+
+{% block title %}Statistiques des Événements{% endblock %}
+
+{% block body %}
+<h1>Statistiques des Événements</h1>
+<!-- Graphique 2 : Compte le nombre d'événements futurs (date de début dans le futur) -->
+
+    <p>Nombre d'événements programmés dans le futur : <strong>{{ nombreEvenementsFuturs }}</strong></p>
+
+<!-- Graphique 1 : Calcule la durée moyenne des événements (en jours) -->
+<h2>Durée moyenne des événements</h2>
+<canvas id="averageDurationChart" width="400" height="200"></canvas>
+
+<script>
+    const averageDuration = {{ averageDuration|default(0) }};
+    new Chart(document.getElementById('averageDurationChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Durée moyenne'],
+            datasets: [{
+                label: 'Durée (en jours)',
+                data: [averageDuration],
+                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                borderColor: 'rgba(255, 159, 64, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+
+<!-- Graphique 3 : Récupère les types d'événements les plus populaires et leur fréquence. -->
+<h2>Types d'événements les plus populaires</h2>
+<canvas id="popularEventTypesChart" width="400" height="200"></canvas>
+
+<script>
+    const types = {{ popularEventTypes|map(event => event.type)|json_encode|raw }};
+    const counts = {{ popularEventTypes|map(event => event.count)|json_encode|raw }};
+
+    new Chart(document.getElementById('popularEventTypesChart'), {
+        type: 'horizontalBar',
+        data: {
+            labels: types,
+            datasets: [{
+                label: 'Nombre d\'événements',
+                data: counts,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
